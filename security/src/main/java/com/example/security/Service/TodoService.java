@@ -31,8 +31,37 @@ public class TodoService {
         return todoRepository.findAllByUser(user);
     }
 
-    public void addTodos(Todo todo, Integer userId){
+    public void addTodos(Integer userId, Todo todo){
         User user = authRepository.findUserById(userId);
-        
+
+        todo.setUser(user);
+
+        todoRepository.save(todo);
+    }
+
+    public void updateTodo(Integer userId, Integer todoId, Todo updatedTodo){
+        Todo todo = todoRepository.findTodoById(todoId);
+
+        if(todo == null)
+            throw new ApiException("Todo not found");
+
+        if(!todo.getUser().getId().equals(userId))
+            throw new ApiException("Unauthorized to update this todo");
+
+        todo.setTitle(updatedTodo.getTitle());
+
+        todoRepository.save(todo);
+    }
+
+    public void deleteTodo(Integer userId, Integer todoId){
+        Todo todo = todoRepository.findTodoById(todoId);
+
+        if(todo == null)
+            throw new ApiException("Todo not found");
+
+        if(!todo.getUser().getId().equals(userId))
+            throw new ApiException("Unauthorized to delete this todo");
+
+        todoRepository.delete(todo);
     }
 }

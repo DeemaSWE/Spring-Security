@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/auth/get-all").hasAuthority("ADMIN")
                 .requestMatchers("/api/v1/auth/delete/**").hasAuthority("ADMIN")
                 .requestMatchers("api/v1/todo/get-all").hasAuthority("ADMIN")
-                .requestMatchers("api/v1/todo/get-my-todos").hasAuthority("CUSTOMER")
+                .requestMatchers("api/v1/todo/get-my-todos", "api/v1/todo/add", "api/v1/todo/update/**", "api/v1/todo/delete/**").hasAuthority("CUSTOMER")
                 .anyRequest().authenticated()
                 .and()
                 .logout().logoutUrl("/api/v1/auth/logout")

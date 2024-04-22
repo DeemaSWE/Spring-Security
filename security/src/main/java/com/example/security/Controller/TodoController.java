@@ -30,6 +30,19 @@ public class TodoController {
 
     @PostMapping("/add")
     public ResponseEntity addTodos(@AuthenticationPrincipal User user, @RequestBody @Valid Todo todo){
-        return ResponseEntity.status(200).body(todoService.getMyTodos(user.getId()));
+        todoService.addTodos(user.getId(), todo);
+        return ResponseEntity.status(200).body(new ApiResponse("Todo added successfully"));
+    }
+
+    @PutMapping("/update/{todoId}")
+    public ResponseEntity updateTodo(@AuthenticationPrincipal User user, @PathVariable Integer todoId, @RequestBody @Valid Todo todo){
+        todoService.updateTodo(user.getId(), todoId, todo);
+        return ResponseEntity.status(200).body(new ApiResponse("Todo updated successfully"));
+    }
+
+    @DeleteMapping("/delete/{todoId}")
+    public ResponseEntity deleteTodo(@AuthenticationPrincipal User user, @PathVariable Integer todoId){
+        todoService.deleteTodo(user.getId(), todoId);
+        return ResponseEntity.status(200).body(new ApiResponse("Todo deleted successfully"));
     }
 }
